@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Using yaml to load external configuration files
+require 'yaml'
+
+unless Vagrant.has_plugin?("vagrant-hostmanager")
+  raise 'vagrant-hostmanager is not installed! run "vagrant plugin install vagrant-hostmanager" to fix'
+end
+
+VAGRANTFILE_API_VERSION = '2'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  
+  # Using the hostmanager vagrant plugin to update the host files
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+
+  # Allow use of Vagrant insecure key for passwordless SSH
+  config.ssh.insert_key = false
+  
+  # Loading in the VM configuration information
+  cbd = YAML.load_file('cbd.yml')
+
+  # cloudbreak VM config
+  vm_name = cbd['vm']['name']
+  vm_box  = cbd['vm']['basebox']
+  vm_cpus = cbd['vm']['cpu']
+  vm_mem  = cbd['vm']['mem']
+  vm_ip   = cbd['vm']['ip']
+
+  # Cloudbreak config
+  cbd_version             = cbd['cloudbreak']['version']
+  cbd_install_dir         = cbd['cloudbreak']['install_dir']
+  cbd_profile_secret      = cbd['cloudbreak']['profile_secret']
+  cbd_profile_user_email  = cbd['cloudbreak']['profile_user_email']
+  cbd_profile_user_pwd    = cbd['cloudbreak']['profile_user_pwd']
+
+  # Defining the Cloudbreak VM
+  config.vm.define vm_name do |srv|
+    srv.vm.box = vm_box
+    srv.vm.hostname = vm_name
+    srv.vm.network "private_network", ip: vm_ip, :adapater=>2
+    srv.vm.provision :shell, inline: "sed -i'' '/^127.0.0.1\\t#{srv.vm.hostname}\\t#{srv.vm.hostname}$/d' /etc/hosts"
+    srv.vm.provision :shell, :path => "../scripts/provision-cbd.sh", :args => "#{cbd_version} #{cbd_install_dir} #{cbd_profile_secret} #{cbd_profile_user_email} #{cbd_profile_user_pwd} #{vm_ip}"
+    srv.vm.provider :virtualbox do |vb|
+      vb.name = vm_name
+      vb.cpus = vm_cpus
+      vb.memory = vm_mem
+    end
+  end
+
+end
