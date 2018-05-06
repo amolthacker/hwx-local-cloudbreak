@@ -7,8 +7,8 @@ vm:
   ip: 192.168.22.22
 
 cloudbreak:
-  version: 2.4.1
-  install_dir: /opt/hwx/cbd
+  version: 2.5.0
+  install_dir: /var/lib/cloudbreak-deployment
   profile_secret: S3cr3t
   profile_user_email: admin@example.com
   profile_user_pwd: password
