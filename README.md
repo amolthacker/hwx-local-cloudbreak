@@ -16,19 +16,21 @@ Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbrea
      $ git clone https://github.com/amolthacker/hwx-local-cloudbreak.git
      ```
 
-  2. Modify the configuration and properties, as needed, in `vagrant/cbd.yml` 
+  2. Update service IP and login credentials, as desired, in `scripts/env.sh` 
 
-  3. Spin up the VM
+  3. Update Cloudbreak VM configuration, as desired, in `vagrant/cbd.yml`
+
+  4. Update Cloud Provider credentials, as desired, in `credentials/`
+
+  4. Install and setup Cloudbreak 
      ```
-     $ cd hwx-local-cloudbreak/vagrant
-
-     $ vagrant up
-
-     $ vagrant ssh hwx-cloudbreak
+     $ ./scripts/install-n-setup-cloudbreak.sh
      ```
 
-  4. Log in
+  5. Log in
      ```
+     $ cd vagrant && vagrant ssh hwx-cloudbreak
+
      https://hwx-cloudbreak/sl/
      ```
 
@@ -40,7 +42,8 @@ Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbrea
      $ vagrant up
      $ vagrant ssh hwx-cloudbreak
 
-     $ hwx-cloudbreak $ cbd start
+     hwx-cloudbreak $ cd /var/lib/cloudbreak-deployment
+     hwx-cloudbreak $ sudo cbd start
      ```
 
   2. Stop
@@ -48,6 +51,7 @@ Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbrea
      $ cd vagrant
      $ vagrant ssh hwx-cloudbreak
 
+     hwx-cloudbreak $ cd /var/lib/cloudbreak-deployment
      hwx-cloudbreak $ sudo cbd kill
      hwx-cloudbreak $ exit
 

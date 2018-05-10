@@ -65,13 +65,13 @@ CLOUDBREAK_DEPLOYER_IP=$6
 
 sudo -i
 
-logInfo "Installing/Updating requisite system packages ..."
+logInfo "Updating requisite system packages ..."
 logInfo "-------------------------------------------------"
-yum -y update && yum -y install net-tools ntp wget lsof unzip tar iptables-services
+yum update -y
 
-logInfo "Installing and Configuring iptables-services ..."
+logInfo "Installing and Configuring iptables-services and net-tools ..."
 logInfo "-------------------------------------------------"
-yum -y install iptables-services net-tools
+yum install -y iptables-services net-tools
 iptables --flush INPUT && iptables --flush FORWARD && service iptables save
 
 logInfo "Configuring Docker Repo ..."
@@ -93,9 +93,7 @@ systemctl enable docker
 
 logInfo "Fetching & Configuring Cloudbreak Deployer ..."
 logInfo "-------------------------------------------------"
-yum -y install unzip tar
 curl -Ls ${CLOUDBREAK_REPO_BASE_PATH}/cloudbreak-deployer_${CLOUDBREAK_VERSION}_$(uname)_x86_64.tgz | sudo tar -xz -C /bin cbd
-
 mkdir -p ${CLOUDBREAK_DEPLOYER_INSTALL_DIR} && cd ${CLOUDBREAK_DEPLOYER_INSTALL_DIR}
 cat > Profile <<EOF
 export UAA_DEFAULT_SECRET="$CLOUDBREAK_DEPLOYER_PROFILE_SECRET"

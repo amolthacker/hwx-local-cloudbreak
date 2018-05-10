@@ -29,14 +29,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   vm_box  = cbd['vm']['basebox']
   vm_cpus = cbd['vm']['cpu']
   vm_mem  = cbd['vm']['mem']
-  vm_ip   = cbd['vm']['ip']
+  vm_ip   = ENV['CBD_SERVER_IP']
 
   # Cloudbreak config
-  cbd_version             = cbd['cloudbreak']['version']
+  cbd_version             = ENV['CB_VERSION']
   cbd_install_dir         = cbd['cloudbreak']['install_dir']
   cbd_profile_secret      = cbd['cloudbreak']['profile_secret']
-  cbd_profile_user_email  = cbd['cloudbreak']['profile_user_email']
-  cbd_profile_user_pwd    = cbd['cloudbreak']['profile_user_pwd']
+  cbd_profile_user_email  = ENV['CB_USER_EMAIL']
+  cbd_profile_user_pwd    = ENV['CB_USER_PASSWORD']
+
+  config.vm.provision :shell, :path => "../scripts/provision-cbd.sh", :args => "#{cbd_version} #{cbd_install_dir} #{cbd_profile_secret} #{cbd_profile_user_email} #{cbd_profile_user_pwd} #{vm_ip}"
 
   # Defining the Cloudbreak VM
   config.vm.define vm_name do |srv|
@@ -44,7 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv.vm.hostname = vm_name
     srv.vm.network "private_network", ip: vm_ip, :adapater=>2
     srv.vm.provision :shell, inline: "sed -i'' '/^127.0.0.1\\t#{srv.vm.hostname}\\t#{srv.vm.hostname}$/d' /etc/hosts"
-    srv.vm.provision :shell, :path => "../scripts/provision-cbd.sh", :args => "#{cbd_version} #{cbd_install_dir} #{cbd_profile_secret} #{cbd_profile_user_email} #{cbd_profile_user_pwd} #{vm_ip}"
     srv.vm.provider :virtualbox do |vb|
       vb.name = vm_name
       vb.cpus = vm_cpus

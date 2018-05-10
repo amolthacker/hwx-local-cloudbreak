@@ -2,13 +2,10 @@
 vm:
   basebox: athacker/hwx-base-centos7
   name: hwx-cloudbreak
-  cpu: 2
-  mem: 4096
-  ip: 192.168.22.22
+  cpu: 4
+  mem: 8192
 
 cloudbreak:
-  version: 2.5.0
   install_dir: /var/lib/cloudbreak-deployment
   profile_secret: S3cr3t
-  profile_user_email: admin@example.com
-  profile_user_pwd: password
+  
