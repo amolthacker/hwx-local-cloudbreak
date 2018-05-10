@@ -12,22 +12,20 @@ Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbrea
  ## Steps
 
   1. Clone the repo
-     ```
-     $ git clone https://github.com/amolthacker/hwx-local-cloudbreak.git
-     ```
 
-  2. Update service IP and login credentials, as desired, in `scripts/env.sh` 
+  2. Update Cloudbreak VM IP and login credentials, as desired, in `scripts/env.sh` 
 
-  3. Update Cloudbreak VM configuration, as desired, in `vagrant/cbd.yml`
+  3. Update Cloud Provider credentials, as desired, in `credentials/`
 
-  4. Update Cloud Provider credentials, as desired, in `credentials/`
+  4. Update Cloudbreak VM configuration, if needed, in `vagrant/cbd.yml`
 
-  4. Install and setup Cloudbreak 
+
+  5. Install and setup Cloudbreak 
      ```
      $ ./scripts/install-n-setup-cloudbreak.sh
      ```
 
-  5. Log in
+  6. Log in
      ```
      $ cd vagrant && vagrant ssh hwx-cloudbreak
 
