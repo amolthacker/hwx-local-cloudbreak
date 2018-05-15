@@ -29,13 +29,14 @@ Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbrea
      ```
      $ cd vagrant && vagrant ssh hwx-cloudbreak
 
-     https://hwx-cloudbreak/sl/
+     https://<CBD_SERVER_IP>
      ```
 
 ## Operations
 
   1. Start
      ```
+     $ source ./scripts/env.sh
      $ cd vagrant
      $ vagrant up
      $ vagrant ssh hwx-cloudbreak
