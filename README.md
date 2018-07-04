@@ -1,4 +1,4 @@
-# HWX Local Cloudbreak
+# HWX Cloudbreak Local
 
 Run [Hortonworks Cloudbreak](https://docs.hortonworks.com/HDPDocuments/Cloudbreak/Cloudbreak-2.4.1/index.html) locally
 
