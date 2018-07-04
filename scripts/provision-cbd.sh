@@ -96,19 +96,19 @@ logInfo "-------------------------------------------------"
 curl -Ls ${CLOUDBREAK_REPO_BASE_PATH}/cloudbreak-deployer_${CLOUDBREAK_VERSION}_$(uname)_x86_64.tgz | sudo tar -xz -C /bin cbd
 mkdir -p ${CLOUDBREAK_DEPLOYER_INSTALL_DIR} && cd ${CLOUDBREAK_DEPLOYER_INSTALL_DIR}
 cat > Profile <<EOF
-export UAA_DEFAULT_SECRET="$CLOUDBREAK_DEPLOYER_PROFILE_SECRET"
-export UAA_DEFAULT_USER_EMAIL="$CLOUDBREAK_DEPLOYER_PROFILE_USER_EMAIL"
-export UAA_DEFAULT_USER_PW="$CLOUDBREAK_DEPLOYER_PROFILE_USER_PASSWORD"
-export PUBLIC_IP="$CLOUDBREAK_DEPLOYER_IP"
+export UAA_DEFAULT_SECRET=$CLOUDBREAK_DEPLOYER_PROFILE_SECRET
+export UAA_DEFAULT_USER_EMAIL=$CLOUDBREAK_DEPLOYER_PROFILE_USER_EMAIL
+export UAA_DEFAULT_USER_PW=$CLOUDBREAK_DEPLOYER_PROFILE_USER_PASSWORD
+export PUBLIC_IP=$CLOUDBREAK_DEPLOYER_IP
 EOF
 
 logInfo "Installing & Starting Cloudbreak ..."
 logInfo "-------------------------------------------------"
 logInfo ""
 logInfo "Generating docker-compose and uaa configs ..."
-cbd generate
+rm *.yml && cbd generate
 logInfo "Pulling and verifying images for Cloudbreak services ..."
-cbd pull
+cbd pull parallel
 logInfo "Starting Cloudbreak ..."
 cbd start
 logInfo "-------------------------------------------------"
