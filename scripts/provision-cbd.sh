@@ -106,7 +106,7 @@ logInfo "Installing & Starting Cloudbreak ..."
 logInfo "-------------------------------------------------"
 logInfo ""
 logInfo "Generating docker-compose and uaa configs ..."
-rm *.yml && cbd generate
+rm -f *.yml && cbd generate
 logInfo "Pulling and verifying images for Cloudbreak services ..."
 cbd pull parallel
 logInfo "Starting Cloudbreak ..."
